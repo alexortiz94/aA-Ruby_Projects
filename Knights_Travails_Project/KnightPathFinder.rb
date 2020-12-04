@@ -47,6 +47,29 @@ class KnightPathFinder
         end
     end
 
+    def find_path(end_pos)
+        end_node = self.root_node.dfs(end_pos)
+        path = trace_back_path(end_node).reverse
+        p path
+    end
+
+    def trace_back_path(end_node)
+        path_backtrace = [end_node]
+        until path_backtrace.last.parent == nil
+            current_node = path_backtrace.last.parent
+            path_backtrace << current_node
+        end
+        path_backtrace.map(&:value)
+    end
+
+
 end
+
+if $PROGRAM_NAME == __FILE__
+    kpf = KnightPathFinder.new([0,0])
+    kpf.find_path([7, 6]) # => [[0, 0], [1, 2], [2, 4], [3, 6], [5, 5], [7, 6]]
+    kpf.find_path([6, 2]) # => [[0, 0], [1, 2], [2, 0], [4, 1], [6, 2]]
+end
+
 
 
