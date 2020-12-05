@@ -1,6 +1,8 @@
 require_relative 'tic_tac_toe'
 
 class TicTacToeNode
+  attr_reader :board, :next_mover_mark, :prev_move_pos
+
   def initialize(board, next_mover_mark, prev_move_pos = nil)
     @board = board
     @next_mover_mark = next_mover_mark
@@ -16,6 +18,16 @@ class TicTacToeNode
   # This method generates an array of all moves that can be made after
   # the current move.
   def children
+    child_nodes = []
+    self.empty_positions.each do |pos|
+      new_board = @board.dup
+      new_board[pos] = @next_mover_mark
+      mover_mark = nil
+      @next_mover_mark == :x ? mover_mark = :o : mover_mark = :x
+      child_node = TicTacToeNode.new(new_board, mover_mark, pos)
+      child_nodes << child_node
+    end
+    child_nodes
   end
 
   def empty_positions
@@ -31,5 +43,5 @@ class TicTacToeNode
     end
     empty_positions
   end
-  
+
 end
