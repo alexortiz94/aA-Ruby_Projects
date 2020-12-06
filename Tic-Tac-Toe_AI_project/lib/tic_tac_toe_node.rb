@@ -10,8 +10,8 @@ class TicTacToeNode
   end
 
   def losing_node?(evaluator)
-    return false if self.board.over? && (self.board.winner == evaluator || nil) 
-    return true if self.board.over? && (self.board.winner != evaluator || nil)
+    return false if self.board.over? && (self.board.winner == evaluator || self.board.winner == nil) 
+    return true if self.board.over? && (self.board.winner != evaluator && self.board.winner != nil)
     child_nodes = self.children
     if self.next_mover_mark == evaluator
       result = child_nodes.all? { |child_node| child_node.losing_node?(evaluator) }
