@@ -5,7 +5,7 @@ class King < Piece
     include Stepable
 
     def symbol
-        raise NotImplementedError
+        '♚'
     end
 
     protected

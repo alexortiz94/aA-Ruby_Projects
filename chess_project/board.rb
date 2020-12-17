@@ -44,7 +44,8 @@ class Board
     end
 
     def valid_pos?(pos)
-        pos.all? { |coord| coord.between?(0,7) } 
+        raise "that position is not on the board" unless pos.all? { |coord| coord.between?(0,7) }
+        true 
     end
 
     def dup
