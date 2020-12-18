@@ -33,23 +33,59 @@ class Board
     def move_piece(turn_color, start_pos, end_pos)
         # debugger
         piece = self[start_pos]
-        raise ArgumentError.new "There is no piece at start_pos" if piece.empty?
-        raise ArgumentError.new "That piece cannot move there" unless piece.moves.include?(end_pos)
-        # raise ArgumentError.new "You cannot move into check" unless piece.valid_moves.include?(end_pos)
-        raise ArgumentError.new "That piece is not your color" if piece.color != turn_color
+        if piece.empty?
+            raise ArgumentError.new "There is no piece at start_pos" 
+        elsif !piece.moves.include?(end_pos) 
+            raise ArgumentError.new "That piece cannot move there" 
+        elsif piece.color != turn_color   
+            raise ArgumentError.new "That piece is not your color"
+        elsif !piece.valid_moves.include?(end_pos)
+            raise ArgumentError.new "You cannot move yourself into check"
+        end 
         # debugger
-        self[start_pos] = @null_piece
+        move_piece!(start_pos, end_pos)
+    end
+
+    def move_piece!(start_pos, end_pos)
+        piece = self[start_pos]
+        raise ArgumentError.new "That piece cannot move like that" unless piece.moves.include?(end_pos)
+
         self[end_pos] = piece
+        self[start_pos] = @null_piece
         piece.pos = end_pos
+
+        nil
     end
 
     def valid_pos?(pos)
-        raise "that position is not on the board" unless pos.all? { |coord| coord.between?(0,7) }
-        true 
+        pos.all? { |coord| coord.between?(0,7) }
     end
 
     def dup
-        @rows.dup.map { |row| row.dup }
+        dup_board = Board.new(false)
+
+        pieces.each { |piece| piece.class.new(piece.color, dup_board, piece.pos) }
+
+        dup_board   
+    end
+
+    def checkmate?(color)
+        pieces.any? { |piece| piece.color == color && !piece.valid_moves.empty? }
+    end
+            
+
+    def in_check?(color)
+        king_pos = find_king(color)
+        opps_pieces = pieces.reject { |piece| piece.color == color }
+        opps_pieces.any? { |piece| piece.moves.include?(king_pos)}
+    end
+
+    def find_king(color)
+        @rows.flatten.each { |piece| return piece.pos if piece.color == color && piece.to_s == "King"}
+    end
+
+    def pieces
+        rows.flatten.reject(&:empty?)
     end
 
     private
@@ -79,7 +115,12 @@ end
 
 if $PROGRAM_NAME == __FILE__
     b1 = Board.new
-    p b1
-    b1.move_piece(:white,[6,1],[4,1])
-    p b1
+    b1.move_piece(:white, [6,5],[5,5])
+    b1.move_piece(:black, [1,4],[3,4])
+    b1.move_piece(:white, [6,6],[4,6])
+    b1.move_piece(:black, [0,3],[4,7])
+    p b1.in_check?(:white)
+    p b1.checkmate?(:white)
+    
+    
 end

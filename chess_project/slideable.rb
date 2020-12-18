@@ -28,13 +28,13 @@ module Slideable
     def grow_unblocked_moves_in_dir(d_row, d_col)
         moves = []
         start_pos = @pos.dup
-        start_pos = cur_row, cur_col
+        cur_row, cur_col = start_pos
         loop do
             cur_row, cur_col = cur_row + d_row, cur_col + d_col
             new_pos = [cur_row, cur_col]
             break unless @board.valid_pos?(new_pos)
 
-            if @board[new_pos].empty?
+            if @board.empty?(new_pos)
                 moves << new_pos
             else 
                 moves << new_pos if @board[new_pos].color != @color
