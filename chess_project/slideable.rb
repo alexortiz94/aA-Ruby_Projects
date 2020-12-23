@@ -11,6 +11,7 @@ module Slideable
     end
 
     def moves
+        # debugger
         moves = []
         move_dirs.each do |d_row, d_col|
             moves.concat(grow_unblocked_moves_in_dir(d_row, d_col))
@@ -30,10 +31,11 @@ module Slideable
         start_pos = @pos.dup
         cur_row, cur_col = start_pos
         loop do
+            # debugger
             cur_row, cur_col = cur_row + d_row, cur_col + d_col
             new_pos = [cur_row, cur_col]
             break unless @board.valid_pos?(new_pos)
-
+            # debugger
             if @board.empty?(new_pos)
                 moves << new_pos
             else 

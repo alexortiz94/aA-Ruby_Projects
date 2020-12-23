@@ -34,13 +34,13 @@ class Board
         # debugger
         piece = self[start_pos]
         if piece.empty?
-            raise ArgumentError.new "There is no piece at start_pos" 
+            raise "There is no piece at start_pos" 
         elsif !piece.moves.include?(end_pos) 
-            raise ArgumentError.new "That piece cannot move there" 
+            raise "That piece cannot move there" 
         elsif piece.color != turn_color   
-            raise ArgumentError.new "That piece is not your color"
+            raise "That piece is not your color"
         elsif !piece.valid_moves.include?(end_pos)
-            raise ArgumentError.new "You cannot move yourself into check"
+            raise "You cannot move yourself into check"
         end 
         # debugger
         move_piece!(start_pos, end_pos)
@@ -48,7 +48,7 @@ class Board
 
     def move_piece!(start_pos, end_pos)
         piece = self[start_pos]
-        raise ArgumentError.new "That piece cannot move like that" unless piece.moves.include?(end_pos)
+        raise "That piece cannot move like that" unless piece.moves.include?(end_pos)
 
         self[end_pos] = piece
         self[start_pos] = @null_piece
@@ -70,7 +70,8 @@ class Board
     end
 
     def checkmate?(color)
-        pieces.any? { |piece| piece.color == color && !piece.valid_moves.empty? }
+        color_pieces = pieces.select { |piece| piece.color == color }
+        color_pieces.all? { |piece| piece.valid_moves.empty? }
     end
             
 
