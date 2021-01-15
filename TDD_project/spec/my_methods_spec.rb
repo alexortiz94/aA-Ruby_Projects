@@ -15,4 +15,11 @@ describe Array do
         end
 
     end
+
+    describe "#two_sum" do
+        it "finds all pairs of positions that sum to zero" do
+            my_array = [-1, 0, 2, -2, 1]
+            expect(my_array.two_sum).to match_array([[0,4], [2,3]])
+        end
+    end
 end
