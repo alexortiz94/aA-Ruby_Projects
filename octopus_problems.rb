@@ -74,6 +74,32 @@ class CleverOctopus
 end
     
 
+# tiles_array = ["up", "right-up", "right", "right-down", "down", "left-down", "left",  "left-up" ]
+# move_hash = { "up"=>0, "right-up"=>1, "right"=>2, "right-down"=>3, "down"=>4, "left-down"=>5, "left"=>6, "left-up"=>7 }
+class DancingOctopus
+
+    def slow_dance(tile_direction, tiles)
+        tiles.each_index { |idx| return idx if tiles[idx] == tile_direction }
+    end
+
+    def fast_dance(tile_direction, hash_map)
+        hash_map[tile_direction]
+    end
+end
+
+# slow_dance("up", tiles_array)
+# > 0
+
+# slow_dance("right-down", tiles_array)
+# > 3
+# fast_dance("up", new_tiles_data_structure)
+# > 0
+
+# fast_dance("right-down", new_tiles_data_structure)
+# > 3
+
+
+
 
 
 
